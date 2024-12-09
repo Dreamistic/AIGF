@@ -1,5 +1,4 @@
 # AIGF
-!img[https://raw.githubusercontent.com/Dreamistic/AIGF/refs/heads/main/aila.jpg]
 
 **仍在开发中**
 ## 实现功能
