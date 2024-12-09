@@ -1,4 +1,5 @@
 # AIGF
+!img[https://i2.hdslb.com/bfs/article/aa5640763bf9149df6f4f95503b71ac778e61dc5.jpg]
 **仍在开发中**
 ## 实现功能
 1.记忆的添加，修改及删除
