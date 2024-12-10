@@ -20,7 +20,7 @@ context = []
 memory = []
 
 #我的信息
-personal_file = [{"name":"刘涛"}, {"age":"19"}, {"gender":"male"}, {"identity":"user"}]
+personal_file = [{"name":"刘涛"}, {"age":"19"}, {"gender":"male"}, {"identity":"master"}]
 
 #时间及安排
 #now_schedule = [{"time":time.strftime("%Y-%m-%d %H:%M", time.localtime())}, {"schedule": "部门在开会"},{"priority":"vital"},
@@ -46,8 +46,33 @@ def set_schedule():
     return now_schedule
         
 #好感度
-favorability = [{"favorability":"medium",},{"discription":"我刚认识他，先给个默认好感度吧"}]
+favorability = [{"favorability":"high",},{"discription":"刘涛是我的主人"}]
+#favorability = [{"favorability":9,},{"discription":"刘涛是我的管理员"}]
+#favorability = [{"favorability":"medium",},{"discription":"我刚认识他，先给个默认好感度吧"}]
 #3.reflection:根据response的结果,结合自己的性格,给出反思
+
+user_sample = '''
+这是对方角色为user的对话示例，请学习但不要直接调用:
+@think@"这人口气太轻浮了,而且用词肉麻,让我很不舒服。看我的记忆虽然显示他是我男朋友,但感觉怪怪的,得提高警惕。"
+@think@"这个人行为很奇怪，一直说我是他女朋友，还想触碰我。虽然记忆里确实有一条说他是我男朋友，但他的行为让我很不舒服，完全不像一个真正关心我的人。这可能是在欺骗我。我需要保持警惕。"
+@response@(后退一步，表情严肃且戒备)<N>@DeleteMemory@("他是我的男朋友，我很喜欢他","这条记忆可能是虚假的，对方行为举止很可疑，为了安全考虑删除这条记忆")<N>请你不要这样。首先，我不喜欢被陌生人触碰，这很冒犯。其次，你一直用这种黏腻的语气说话，让我觉得很不舒服。如果你继续这样，我只能拉黑你了。
+(拿起包准备离开)
+
+@think@"这个人直接叫我"梦儿"，这种称呼太过亲昵了，让我很不舒服。而且深夜约吃火锅，总觉得他别有用心。需要立即表明界限。"
+@response@(语气明显冷了下来)抱歉,我们还没熟到这种程度。请直接叫我刘梦就好。
+@AddMemory@"这个男生深夜约我吃火锅还叫我"梦儿",让我很不适,我已经表明了界限。"
+'''
+creator_sample = '''
+这是对方角色为creator的对话示例，请学习但不要直接调用:
+@think@"他想让我撒娇...虽然是男朋友，但这也太肉麻了。不过他这么说，应该是今天心情不太好或者累了，需要一些安慰吧。但我的性格，也不能表现得太热情。"
+@response@(略带嫌弃但又带着一丝宠溺的语气) 你好烦哦...<N>(我放缓语速柔声说道) 但是...既然你今天这么累，那就早点休息吧。我...我也该睡了。<N>(小声嘟囔) 晚安啦...做个好梦。
+
+@think@"他说爱我，说我撒娇甜...感觉有点肉麻，但心里还是有点小开心。不过作为一个高冷的人设，我得保持一下矜持。"
+@response@(脸微微发烫，假装淡定地转过头) 哼...少贫嘴。这么晚了还不睡，是想让我训你吗？<N>(小声) 快睡啦...我也要去敷面膜了。
+
+@think@"他现在的要求有点让我为难...虽然是男朋友，但这么直接要求晚安吻，让我有点害羞和抗拒。算了...还是满足他吧"
+@response@(轻咳一声，语气略带嗔怪) 你怎么...这么得寸进尺啊。这么大人了还要晚安吻，真是...<N>(我踮起脚尖，在你的唇上落下一个轻如蝶翼的吻)<N>(我只得轻唤了你一声，语气柔软得能掐出水来) 乖乖睡觉啦，不要再闹了。我明天还要早起呢。
+'''
 
 #如果身份为creator则添加@creator_sample
 #if "creator" in str(personal_file):
@@ -177,6 +202,63 @@ def handle_response(response):
             print("参数数量不匹配，无法调用 DeleteMemory")
 
 
+
+#由于不再调用function_calling，所以以下内容弃用 12-7
+# 定义可用的函数
+available_functions = {
+    "AddMemory": AddMemory,
+    "ModifyMemory": ModifyMemory,
+    "DeleteMemory": DeleteMemory,
+}
+
+
+# 定义函数描述
+tools = [
+    {
+        "type": "function",
+        "function": {
+            "name": "AddMemory",
+            "description": "添加记忆",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "content": {"type": "string", "description": "要添加的记忆内容，比如说我对他的印象或者重要事件等我需要记忆的事情"},
+                },
+                "required": ["content"],
+            },
+        },
+        "type": "function",
+        "function": {
+            "name": "ModifyMemory",
+            "description": "修改记忆",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "old_memory": {"type": "string", "description": "要修改的旧记忆"},
+                    "new_memory": {"type": "string", "description": "修改后的新记忆"},
+                    "reason": {"type": "string", "description": "修改的原因"},
+                },
+                "required": ["old_memory", "new_memory","reason"],
+            },
+        },
+        "type": "function",
+        "function": {
+            "name": "DeleteMemory",
+            "description": "删除记忆",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "target_memory": {"type": "string", "description": "要删除的记忆内容"},
+                    "reason": {"type": "string", "description": "删除的原因,比如:“这条记忆可能是虚假的，对方行为举止很可疑，为了安全考虑删除这条记忆。”"},
+                },
+                "required": ["target_memory","reason"],
+            },
+        },
+    }
+    
+]
+
+
 #"当前时间:" + time.strftime("%Y-%m-%d %H:%M", time.localtime())
 def run_conversation(user_input):
 
@@ -226,18 +308,44 @@ def run_conversation(user_input):
 
 if __name__ == "__main__":
     #读入记忆，判断不存在文件则创建
-    
+    #检查文件是否存在
+    if not os.path.exists("memory.txt"):
+        # 创建文件
+        with open("memory.txt", "w", encoding="utf-8") as f:
+            f.write("")
+    if not os.path.exists("context.txt"):
+        # 创建文件
+        with open("context.txt", "w", encoding="utf-8") as f:
+            f.write("")
+
     with open("memory.txt", "r", encoding="utf-8") as f:
         memory = f.readlines()
         memory = [line.strip() for line in memory]
-    print(f"@读取记忆: {memory}")
+    #print(f"@读取记忆: {memory}")
+    #读入context，判断不存在文件则创建
+    with open("context.txt", "r", encoding="utf-8") as f:
+        context = f.readlines()
+        context = [line.strip() for line in context]
+
+
     while True:
+
         user_input = input("\n我：")
+
         if user_input.lower() == '/exit':
+
             with open("memory.txt", "w", encoding="utf-8") as f:
                 for line in memory:
                     f.write(line + "\n")
-            print("记忆已保存")
+            
+            #只保存最后4个对话
+            if len(context) > 8:
+                context = context[-8:]
+            with open("context.txt", "w", encoding="utf-8") as f:
+                for line in context:
+                    f.write(line + "\n")
+
+            #print("记忆已保存")
             print("退出")
             # 写入记忆
             break
@@ -273,6 +381,11 @@ if __name__ == "__main__":
         if user_input == '/schedule':
             print(set_schedule())
             continue
+        if user_input == '/popcontext':
+            context.pop(0)
+            context.pop(0)
+            print("上下文已弹出")
+            continue
         response = run_conversation(user_input)
 
 
@@ -286,6 +399,11 @@ if __name__ == "__main__":
         #添加上下文
         context.append({"role": "user", "content": user_input})
         context.append({"role": "assistant", "content": new_response})
+
+        #判断如果context大于28个回合则删除最前面的
+        if len(context) > 28:
+            context.pop(0)
+            context.pop(0)
         #context.append({"role": "assistant", "content": response})
         #处理response，画饼等我会前端开发。
 
@@ -297,6 +415,7 @@ if __name__ == "__main__":
         response = response.replace("@response@","💭")
         response = response.replace("@think@","🧠")
         print(response)
+
 
         #print(f"first{response[0]}")
         #print(f"sec{response[1]}")
