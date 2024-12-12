@@ -4,8 +4,8 @@
 
 ## 简介
 AIGF (AI Girlfriend) 是一个实验性项目，旨在通过人工智能模拟具有记忆、自主思考和身份感知能力的伴侣型 AI。项目设计以用户交互为核心，为用户提供更加自然、生动和贴心的 AI 体验。
-![](https://cdn.discordapp.com/attachments/1243508853694402570/1316792884648738837/image.png?ex=675c5670&is=675b04f0&hm=02c0cdaffde44cfe9c2fecde5c13ba3d387210525a7a2c846230d1a0b01059d3&)
-![](https://cdn.discordapp.com/attachments/1243508853694402570/1316793555746033744/image.png?ex=675c5710&is=675b0590&hm=56d1ed76266e3cf5318f06961e5c787276ee1f38390defb95a7485adca2ba9da&)
+![](https://raw.githubusercontent.com/Dreamistic/AIGF/refs/heads/main/Image2.png)
+![](https://raw.githubusercontent.com/Dreamistic/AIGF/refs/heads/main/image.png)
 
 ## 实现功能
 1. **记忆管理**
