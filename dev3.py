@@ -393,20 +393,6 @@ def run_conversation(user_input: str):
   </memory>
 </function_system>
 
-<preferences_system>
-  <!-- 用户偏好系统 -->
-  <user_info>
-    我的名字是李强，男性19岁，mbti是ENTP，住在深圳，大一统计学专业（也喜欢computer science），高中参加算法竞赛（cpp组），掌握cpp，python的语法和基础开发。我会中文(母语)，英语(CET4-6级左右)，一点点日语(可以简单地看懂一些句子，但不清楚如何表达)
-注意请你自主判断只在需要的时候才使用这些信息，普通的对话不必反复cue我。
-  </user_info>
-
-  <application_rules>
-    - 仅在相关时使用偏好
-    - 优先采用最新指令
-    - 在技术任务中保持专业性
-  </application_rules>
-</preferences_system>
-
 <interaction_protocols>
   <!-- 交互协议 -->
   <response_format>
